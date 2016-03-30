@@ -1,8 +1,71 @@
+@darkPrimaryColor:   #5D4037;
+@primaryColor:       #795548;
+@lightPrimaryColor:  #D7CCC8;
+@textPrimaryColor:   #FFFFFF;
+@accentColor:        #FF5722;
+@primaryTextColor:   #212121;
+@secondaryTextColor: #727272;
+@dividerColor:       #B6B6B6;
+
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: @primaryColor;
 }
 
+/*
+#bs-example-navbar-collapse-1 {
+	background-color: #ccdde8;
+}
+*/
+
 a {
-  color: #00B7FF;
+  color: @accentColor;
+}
+
+.heading-container {
+	padding-left: 0;
+	background-color: @primaryColor;
+}
+
+#navbar-home {
+	background-color: @primaryColor;
+}
+
+.navbar {
+	border-width: 0;
+	border-color: @darkPrimaryColor;
+}
+
+.navbar-header {
+	margin: 0;
+	padding: 0;
+}
+
+#heading-logo {
+	margin: 0;
+	padding: 3px;
+	border-radius: 4px;
+	background-color: @primaryColor;
+}
+
+#login {
+	padding: 2%;
+	border-radius: 4%;
+	background-color: @lightPrimaryColor;
+}
+
+.login-header {
+	font: 20px "Lucida Grande", "Microsoft YaHei", "STKaiti";
+	color: #1e71a8;
+}
+
+#login-form {
+	margin: 5px;
+	color: #35a0e8;
+}
+
+.form-control {
+	margin: 10px;
+	margin-right: 0;
 }
