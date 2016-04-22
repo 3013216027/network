@@ -15,13 +15,22 @@ import java.net.*;
 public class Client {
 	public final static String serverAddress = Server.address;
 	public final static int serverPort = Server.port;
+	
+	private final static boolean DEBUG = true;
 
 	public static void main(String args[]) throws Exception {
 		if (args.length > 0) {
-			if (args.length == 1 && args[0] == "-") {
+			if (DEBUG) {
+				System.out.println("args[0] = |" + args[0] + "|");
+			}
+			if (args.length == 1 && args[0].equals("-")) {
+				System.out.println("Connection established! Send data from stdin...");
 				(new FileSender()).start(); //read data from stdin
 			} else {
 				for (int i = 0; i < args.length; ++i) {
+					if (DEBUG) {
+						System.err.println("read from file " + args[i]);
+					}
 					(new FileSender(args[i])).start();
 				}
 			}
@@ -47,7 +56,7 @@ class FileSender extends Thread {
 	BufferedInputStream bis = null;
 	BufferedOutputStream bos = null;
 
-	FileSender(){
+	FileSender() {
 		try {
 			socket = new Socket(Client.serverAddress, Client.serverPort);
 			bis = new BufferedInputStream(new DataInputStream(System.in));
@@ -63,19 +72,28 @@ class FileSender extends Thread {
 			bis = new BufferedInputStream(new DataInputStream(new FileInputStream(filename)));
 		} catch (Exception e) {
 			e.printStackTrace();
+			//Thread.currentThread().interrupt();
 		}
 	}
 
 	public void run() {
 		try {
 			int length;
-			while ((length = bis.read(buffer)) != -1) {
-				bos.write(buffer, 0, length);
+			if (bis != null) {
+				while ((length = bis.read(buffer)) != -1) {
+					if (bos != null) {
+						bos.write(buffer, 0, length);
+					}
+				}
+				bis.close();
 			}
-			bis.close();
-			bos.flush();
-			bos.close();
-			socket.close();
+			if (bos != null) {
+				bos.flush();
+				bos.close();
+			}
+			if (socket != null) {
+				socket.close();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

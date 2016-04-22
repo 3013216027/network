@@ -22,10 +22,10 @@ public class Server {
 	public static int port = 2333;
 	static int sum = 0;
 
-	private static boolean parsePort(String port) {
+	private static boolean checkPort(String port) {
 		int res = -1;
 		try {
-			res = Int.parseInt(port);
+			res = Integer.parseInt(port);
 		} catch (NumberFormatException e) {
 			res = -1;
 		}
@@ -34,14 +34,14 @@ public class Server {
 
 	public static void main(String[] args) throws Exception {
 		if (args.length > 0) {
-			if (parsePort(args[0])) {
-				port = Int.toString(args[0]);
+			if (checkPort(args[0])) {
+				port = Integer.parseInt(args[0]);
 			} else {
 				System.out.println("port format error! Use port " + port + " instead...");
 			}
 		}
 		ServerSocket server  = new ServerSocket(port);
-		System.out.println((LocalTime.now()).toString() + ": Listening to " + address + ":" + port);
+		System.out.println((LocalTime.now()).toString() + ": Server listening to " + address + ":" + port);
 
 		while (true) {
 			Socket socket = server.accept();
@@ -128,7 +128,7 @@ class FileReceiver extends Thread {
 		try {
 			this.dis = new DataInputStream(socket.getInputStream());
 			//String filename = storageDirectory + random();
-			String filename = storageDirectory + "file" + cid;
+			String filename = storageDirectory + "file" + cid + "." + (LocalTime.now()).hashCode();
 			if (storageTest()) {
 				this.fos = new FileOutputStream(filename);
 				System.out.println("Saving data from connection #" + cid + " to: " + filename);
